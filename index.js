@@ -12,7 +12,7 @@ app.use(express.json()); /* for req.body if use fetch. If axios then remove it*/
 
 const verifyJwt = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    // console.log('inside the function', authHeader)
+
     if (!authHeader) {
         return res.status(401).send({ message: 'Unauthorized Access' })
     };
@@ -26,7 +26,7 @@ const verifyJwt = (req, res, next) => {
         next();
 
     })
-}
+};
 
 // connect server to the database
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.cf5fx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
@@ -36,7 +36,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect();
-        const serviceCollection = client.db('warehouse').collection('items');
+        const itemCollection = client.db('warehouse').collection('items');
         console.log('db connected');
 
         // authentication (JWT)
@@ -48,14 +48,15 @@ async function run() {
             res.send({ accessToken });
         });
 
-        // Service Collection API
-        // get all service data from database and send to client side
-        app.get('/service', async (req, res) => {
+        // items Collection API
+        // get all items data from database and send to client side
+        app.get('/item', async (req, res) => {
             const query = {};
-            const cursor = serviceCollection.find(query);
-            const services = await cursor.toArray();
-            res.send(services);
+            const cursor = itemCollection.find(query);
+            const items = await cursor.toArray();
+            res.send(items);
         });
+        // old code change
         // get single service data with id params from database and send to client side
         app.get('/service/:id', async (req, res) => {
             const idParams = req.params.id;
@@ -64,12 +65,14 @@ async function run() {
             res.send(service);
         });
 
+        // old code change
         // receive new service add request from client side to save in the data base and then send to client side again
         app.post('/service', async (req, res) => {
             const newService = req.body;
             const result = await serviceCollection.insertOne(newService);
             res.send(result);
         });
+        // old code change
         // receive delete request from client side to delete from database 
         app.delete('/service/:id', async (req, res) => {
             const idAsParams = req.params.id;
@@ -78,6 +81,7 @@ async function run() {
             res.send(result);
         });
 
+        // old code change
         // order collection API
         app.post('/order', async (req, res) => {
             const order = req.body;
@@ -85,6 +89,7 @@ async function run() {
             res.send(result);
         });
 
+        // old code change
         app.get('/orders', verifyJwt, async (req, res) => {
             const decodedEmail = req.decoded.email;
             const email = req.query.email;
