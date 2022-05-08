@@ -21,7 +21,6 @@ const verifyJwt = (req, res, next) => {
         if (err) {
             return res.status(403).send({ message: 'Access Forbidden' })
         };
-        console.log('decoded', decoded)
         req.decoded = decoded;
         next();
 
