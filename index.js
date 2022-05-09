@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');/* to connect server to the database */
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 5000;
 
 const app = express();
@@ -36,6 +37,7 @@ async function run() {
     try {
         await client.connect();
         const itemCollection = client.db('warehouse').collection('items');
+        const reportCollection = client.db('warehouse').collection('report');
         console.log('db connected');
 
         // authentication (JWT)
@@ -47,14 +49,26 @@ async function run() {
             res.send({ accessToken });
         });
 
-        // items Collection API
+
         // get all items data from database and send to client side
-        app.get('/item', async (req, res) => {
+        app.get('/items', async (req, res) => {
             const query = {};
             const cursor = itemCollection.find(query);
             const items = await cursor.toArray();
             res.send(items);
         });
+        //get inventory data from database and send to client side
+        app.get('/report', async (req, res) => {
+            const query = {};
+            const cursor = reportCollection.find(query);
+            const reports = await cursor.toArray();
+            res.send(reports);
+        });
+
+
+
+
+
         // old code change
         // get single service data with id params from database and send to client side
         app.get('/service/:id', async (req, res) => {
