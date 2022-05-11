@@ -51,7 +51,7 @@ async function run() {
 
 
         // get all items data from database and send to client side
-        app.get('/items', async (req, res) => {
+        app.get('/inventory', async (req, res) => {
             const query = {};
             const cursor = itemCollection.find(query);
             const items = await cursor.toArray();
@@ -64,6 +64,14 @@ async function run() {
             const reports = await cursor.toArray();
             res.send(reports);
         });
+        //get id-wise item  from database and send to client side for stock item info
+        app.get('/inventory/:id', async (req, res) => {
+            const idParams = req.params.id;
+            const query = { _id: ObjectId(idParams) };
+            const inventory = await itemCollection.findOne(query);
+            res.send(inventory);
+
+        })
 
 
 
