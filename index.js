@@ -73,12 +73,12 @@ async function run() {
 
         });
         // get item id-wise and delete on delivery button clicked and send to server to decrease by one
-        app.delete('/inventory/:id', async (req, res) => {
+      /*   app.delete('/inventory/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await userCollection.deleteOne(query);
             res.send(result);
-        });
+        }); */
 
 
 
