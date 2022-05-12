@@ -3,7 +3,7 @@ const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');/* to connect server to the database */
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 
 const app = express();
 
@@ -72,11 +72,28 @@ async function run() {
             res.send(inventory);
 
         });
+
+        // receive PUT request from client side and send response to show qtty on client side UI
+        app.put('/inventory/:id', async (req, res) => {
+            const id = req.params.id;
+            const item = req.body;
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    quantity: parseInt(item.quantity) - 1,
+                }
+            };
+            const result = await itemCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        });
+
+
         // get item id-wise and delete on delivery button clicked and send to server to decrease by one
-      /*   app.delete('/inventory/:id', async (req, res) => {
+    /*     app.delete('/inventory/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
-            const result = await userCollection.deleteOne(query);
+            const result = await itemCollection.deleteOne(query);
             res.send(result);
         }); */
 
