@@ -90,16 +90,12 @@ async function run() {
 
 
         // get item id-wise and delete on delivery button clicked and send to server to decrease by one
-    /*     app.delete('/inventory/:id', async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) };
-            const result = await itemCollection.deleteOne(query);
-            res.send(result);
-        }); */
-
-
-
-
+        /*     app.delete('/inventory/:id', async (req, res) => {
+                const id = req.params.id;
+                const query = { _id: ObjectId(id) };
+                const result = await itemCollection.deleteOne(query);
+                res.send(result);
+            }); */
 
         // old code change
         // get single service data with id params from database and send to client side
