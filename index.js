@@ -110,6 +110,18 @@ async function run() {
             res.send(result);
         });
 
+        // receive new item add request from client side to save in the data base and then send to client side again
+        app.post('/inventory', async (req, res) => {
+            const newItem = req.body;
+            const result = await itemCollection.insertOne(newItem);
+            res.send(result);
+        });
+
+
+
+
+
+
         // old code change
         // get single service data with id params from database and send to client side
         app.get('/service/:id', async (req, res) => {
@@ -119,13 +131,7 @@ async function run() {
             res.send(service);
         });
 
-        // old code change
-        // receive new service add request from client side to save in the data base and then send to client side again
-        app.post('/service', async (req, res) => {
-            const newService = req.body;
-            const result = await serviceCollection.insertOne(newService);
-            res.send(result);
-        });
+
         // old code change
         // receive delete request from client side to delete from database 
         app.delete('/service/:id', async (req, res) => {
