@@ -73,7 +73,7 @@ async function run() {
 
         });
 
-        // receive PUT request from client side to decrease by one qtty and send response to show decreased qtty on client side UI after delivery
+        // receive PUT request from client side to decrease by one qtty and send response to show decreased qtty on client side UI after delivery and increase qtty after adding input and send response to show increased qtty on client side UI after restock item
         app.put('/inventory/:id', async (req, res) => {
             const id = req.params.id;
             const item = req.body;
@@ -81,27 +81,13 @@ async function run() {
             const options = { upsert: true };
             const updateDoc = {
                 $set: {
-                    quantity: parseInt(item.quantity) - 1,
+                    quantity: parseInt(item.updatedQtty),
                 }
             };
             const result = await itemCollection.updateOne(filter, updateDoc, options);
             res.send(result);
         });
 
-        // receive PUT request from client side to increase qtty after adding input and send response to show increased qtty on client side UI after restock item
-        app.put('/inventory/:id', async (req, res) => {
-            const id = req.params.id;
-            const updatedQtty = req.body;
-            const filter = { _id: ObjectId(id) }
-            const options = { upsert: true };
-            const updateDoc = {
-                $set: {
-                    quantity: parseInt(updatedQtty),
-                }
-            };
-            const result = await itemCollection.updateOne(filter, updateDoc, options);
-            res.send(result);
-        });
         // get item id-wise and delete on remove button clicked 
         app.delete('/inventory/:id', async (req, res) => {
             const id = req.params.id;
