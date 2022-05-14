@@ -44,7 +44,7 @@ async function run() {
         app.post('/login', async (req, res) => {
             const user = req.body;
             const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-                expiresIn: '21d'
+                expiresIn: '1d'
             });
             res.send({ accessToken });
         });
@@ -101,6 +101,21 @@ async function run() {
             const newItem = req.body;
             const result = await itemCollection.insertOne(newItem);
             res.send(result);
+        });
+        // verify JWT and email-wise item find and send to client
+        app.get('/inventory', verifyJwt, async (req, res) => {
+            const decodedEmail = req.decoded.email;
+            const email = req.query.email;
+            if (email === decodedEmail) {
+                const query = { email };
+                const cursor = itemCollection.find(query);
+                const myItems = await cursor.toArray();
+                res.send(myItems);
+                console.log(myItems)
+            }
+            else {
+                res.status(403).send({ message: 'Forbidden Access' });
+            }
         });
 
 
