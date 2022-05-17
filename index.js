@@ -103,18 +103,14 @@ async function run() {
             res.send(result);
         });
         // verify JWT and email-wise item find and send to client
-        app.get('/inventory', verifyJwt, async (req, res) => {
-            const decodedEmail = req.decoded.email;
+        app.get('/add', async (req, res) => {
             const email = req.query.email;
-            if (email === decodedEmail) {
-                const query = { email };
-                const cursor = itemCollection.find(query);
-                const myItems = await cursor.toArray();
-                res.send(myItems);
-            }
-            else {
-                res.status(403).send({ message: 'Forbidden Access' });
-            }
+            console.log(email)
+            const query = { email: email };
+            const cursor = addCollection.find(query);
+            const myItems = await cursor.toArray();
+            res.send(myItems);
+
         });
     }
     finally {
