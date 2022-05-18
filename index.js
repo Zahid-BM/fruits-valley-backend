@@ -39,6 +39,7 @@ async function run() {
         await client.connect();
         const itemCollection = client.db('warehouse').collection('items');
         const addCollection = client.db('warehouse').collection('add');
+        const requestedCollection = client.db('warehouse').collection('requested');
         const reportCollection = client.db('warehouse').collection('report');
         console.log('db connected');
 
@@ -108,6 +109,12 @@ async function run() {
         app.post('/add', async (req, res) => {
             const newItem = req.body;
             const result = await addCollection.insertOne(newItem);
+            res.send(result);
+        });
+        // receive new item add request from client side in the request item page
+        app.post('/requested', async (req, res) => {
+            const requestedItem = req.body;
+            const result = await requestedCollection.insertOne(requestedItem);
             res.send(result);
         });
         // verify JWT and email-wise item find and send to client
