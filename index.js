@@ -88,11 +88,11 @@ async function run() {
             res.send(result);
         });
 
-        // get item id-wise and delete on remove button clicked 
-        app.delete('/inventory/:id', async (req, res) => {
+        // get item id-wise and delete on remove button clicked from my items page
+        app.delete('/add/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
-            const result = await itemCollection.deleteOne(query);
+            const result = await addCollection.deleteOne(query);
             res.send(result);
         });
 
