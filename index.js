@@ -104,6 +104,12 @@ async function run() {
             const result = await itemCollection.deleteOne(query);
             res.send(result);
         });
+        // receive new item add request from client side in the request item page
+        app.post('/requested', async (req, res) => {
+            const requestedItem = req.body;
+            const result = await requestedCollection.insertOne(requestedItem);
+            res.send(result);
+        });
 
         // receive new item add request from client side to save in the data base and then send to client side again
         app.post('/add', async (req, res) => {
@@ -111,12 +117,7 @@ async function run() {
             const result = await addCollection.insertOne(newItem);
             res.send(result);
         });
-        // receive new item add request from client side in the request item page
-        app.post('/requested', async (req, res) => {
-            const requestedItem = req.body;
-            const result = await requestedCollection.insertOne(requestedItem);
-            res.send(result);
-        });
+     
         // verify JWT and email-wise item find and send to client
         app.get('/add', verifyJWT, async (req, res) => {
             const decodedEmail = req.decoded.email;
