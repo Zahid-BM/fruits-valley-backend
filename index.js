@@ -59,6 +59,13 @@ async function run() {
             const items = await cursor.toArray();
             res.send(items);
         });
+        // get all requested items from database and send to client side
+        app.get('/requested', async (req, res) => {
+            const query = {};
+            const cursor = requestedCollection.find(query);
+            const items = await cursor.toArray();
+            res.send(items);
+        });
         //get inventory data from database and send to client side
         app.get('/report', async (req, res) => {
             const query = {};
@@ -117,7 +124,7 @@ async function run() {
             const result = await addCollection.insertOne(newItem);
             res.send(result);
         });
-     
+
         // verify JWT and email-wise item find and send to client
         app.get('/add', verifyJWT, async (req, res) => {
             const decodedEmail = req.decoded.email;
