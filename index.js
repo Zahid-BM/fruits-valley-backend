@@ -26,7 +26,7 @@ function verifyJWT(req, res, next) {
         req.decoded = decoded;
         next();
     })
-   
+
 }
 
 // connect server to the database
@@ -94,6 +94,13 @@ async function run() {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await addCollection.deleteOne(query);
+            res.send(result);
+        });
+        // get item id-wise and delete on remove button clicked from manage inventories page
+        app.delete('/inventory/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await itemCollection.deleteOne(query);
             res.send(result);
         });
 
