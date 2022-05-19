@@ -8,8 +8,8 @@ const port = process.env.PORT || 8000;
 const app = express();
 
 // middleware 
-app.use(cors()); /* for providing access to other*/
-app.use(express.json()); /* for req.body if use fetch. If axios then remove it*/
+app.use(cors());
+app.use(express.json());
 
 // verify jwt 
 function verifyJWT(req, res, next) {
