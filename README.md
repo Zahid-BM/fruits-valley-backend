@@ -5,4 +5,4 @@ Client side code GitHub repo [Visit](https://github.com/ProgrammingHeroWC4/wareh
 
 # Short note
 
-All the API codes are basically for CRUD operations and JWT token handling with express and mongodb
+All the API codes are basically for CRUD operations and JWT token handling with express and mongodb .
